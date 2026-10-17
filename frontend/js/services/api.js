@@ -5,11 +5,28 @@
  * If you host the frontend separately, set window.NTC_API_BASE_URL
  * (e.g. in a small inline <script> before this file loads) to point
  * at the backend's origin, e.g. "http://localhost:4000".
+ *
+ * When a page is opened directly from disk (file://), fall back to the
+ * local backend URL so the app still reaches the API while the server is running.
  */
 
-const API_BASE_URL = window.NTC_API_BASE_URL || "";
+const resolveApiBaseUrl = () => {
+  if (window.NTC_API_BASE_URL) {
+    return String(window.NTC_API_BASE_URL).replace(/\/$/, "");
+  }
+
+  if (window.location.protocol === "file:") {
+    return "http://localhost:4000";
+  }
+
+  return "";
+};
+
+const API_BASE_URL = resolveApiBaseUrl();
 const TOKEN_KEY = "ntc_admin_token";
 const USER_KEY = "ntc_admin_user";
+const SURVEY_TOKEN_KEY = "ntc_survey_token";
+const SURVEY_USER_KEY = "ntc_survey_user";
 
 function getToken() {
   return localStorage.getItem(TOKEN_KEY);
@@ -25,6 +42,25 @@ function clearSession() {
   localStorage.removeItem(USER_KEY);
 }
 
+function getSurveyToken() {
+  localStorage.removeItem(SURVEY_TOKEN_KEY);
+  return sessionStorage.getItem(SURVEY_TOKEN_KEY);
+}
+
+function setSurveySession(token, user) {
+  localStorage.removeItem(SURVEY_TOKEN_KEY);
+  localStorage.removeItem(SURVEY_USER_KEY);
+  sessionStorage.setItem(SURVEY_TOKEN_KEY, token);
+  sessionStorage.setItem(SURVEY_USER_KEY, JSON.stringify(user));
+}
+
+function clearSurveySession() {
+  localStorage.removeItem(SURVEY_TOKEN_KEY);
+  localStorage.removeItem(SURVEY_USER_KEY);
+  sessionStorage.removeItem(SURVEY_TOKEN_KEY);
+  sessionStorage.removeItem(SURVEY_USER_KEY);
+}
+
 function getCurrentUser() {
   try {
     return JSON.parse(localStorage.getItem(USER_KEY));
@@ -33,11 +69,11 @@ function getCurrentUser() {
   }
 }
 
-async function apiRequest(path, { method = "GET", body, auth = false } = {}) {
+async function apiRequest(path, { method = "GET", body, auth = false, surveyAuth = false } = {}) {
   const headers = { "Content-Type": "application/json" };
 
-  if (auth) {
-    const token = getToken();
+  if (auth || surveyAuth) {
+    const token = surveyAuth ? getSurveyToken() : getToken();
     if (token) headers["Authorization"] = `Bearer ${token}`;
   }
 
@@ -55,6 +91,8 @@ async function apiRequest(path, { method = "GET", body, auth = false } = {}) {
       window.location.href = "login.html";
     }
   }
+
+  if (res.status === 401 && surveyAuth) clearSurveySession();
 
   let data = null;
   const text = await res.text();
@@ -74,4 +112,13 @@ async function apiRequest(path, { method = "GET", body, auth = false } = {}) {
   return data;
 }
 
-window.NtcApi = { apiRequest, getToken, setSession, clearSession, getCurrentUser };
+window.NtcApi = {
+  apiRequest,
+  getToken,
+  setSession,
+  clearSession,
+  getCurrentUser,
+  getSurveyToken,
+  setSurveySession,
+  clearSurveySession,
+};

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/public.css" />
 </head>
-<body>
+<body class="public-survey-page">
   <header class="site-header">
     <div class="brand">
       <img src="https://formsphilippines.com/agencylogo/28.png" alt="NTC logo" class="brand__logo" />
@@ -26,13 +26,55 @@
   </header>
 
   <main class="survey-shell">
-    <div id="survey-progress" class="survey-progress"></div>
-    <div id="survey-step-label" class="survey-step-label"></div>
+    <section id="survey-login" class="card survey-login" aria-labelledby="survey-login-title" hidden>
+      <p class="survey-login__eyebrow">SECURE SURVEY ACCESS</p>
+      <h1 id="survey-login-title">Sign in to continue</h1>
+      <p class="survey-login__intro">Scan your one-time sign-in QR code, then enter your survey account credentials.</p>
+      <div id="survey-login-error" class="form-error" role="alert" hidden></div>
+      <form id="survey-signin-form">
+        <div class="field">
+          <label for="survey-login-username">Username</label>
+          <input id="survey-login-username" name="username" type="text" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="survey-login-password">Password</label>
+          <input id="survey-login-password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <div id="survey-qr-field" class="field">
+          <label for="survey-login-code">One-time QR code</label>
+          <input id="survey-login-code" name="code" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" required />
+        </div>
+        <p id="survey-qr-status" class="survey-qr-status" role="status" hidden></p>
+        <button type="submit" id="survey-signin-button" class="btn btn-primary btn-block">Verify and continue</button>
+      </form>
+    </section>
+
+    <section id="survey-division-step" class="card survey-division-step" aria-labelledby="survey-division-title" hidden>
+      <p class="survey-login__eyebrow">NTC REGION 2</p>
+      <h1 id="survey-division-title">Which division did you visit?</h1>
+      <p class="survey-division-intro">Choose the division that handled your service. This helps NTC understand feedback by office.</p>
+      <p class="survey-privacy-note">Your response is grouped with this division. Please avoid including sensitive personal details in optional comments.</p>
+      <div id="survey-division-error" class="form-error" role="alert" hidden></div>
+      <form id="survey-division-form">
+        <div class="field">
+          <label for="survey-division-select">Division or section</label>
+          <select id="survey-division-select" name="divisionId" required>
+            <option value="">Select a division</option>
+          </select>
+          <p id="survey-division-description" class="field-hint" aria-live="polite"></p>
+        </div>
+        <button id="survey-division-continue" class="btn btn-primary btn-block" type="submit">Continue to survey</button>
+      </form>
+    </section>
+
+    <div id="survey-progress" class="survey-progress" hidden></div>
+    <div id="survey-step-label" class="survey-step-label" hidden></div>
 
     <div id="survey-error" class="form-error" hidden></div>
     <div id="survey-loading" class="state-message">Loading survey&hellip;</div>
 
     <form id="survey-form" class="card" hidden>
+      <p id="survey-division-label" class="survey-division-label" hidden></p>
       <div id="survey-question-container"></div>
       <div class="survey-actions">
         <button type="button" id="btn-back" class="btn btn-secondary" hidden>&larr; Back</button>
@@ -49,6 +91,8 @@
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
   <script src="../js/services/api.js"></script>
+  <script src="../js/services/surveyAuthService.js"></script>
+  <script src="../js/services/divisionService.js"></script>
   <script src="../js/services/questionService.js"></script>
   <script src="../js/services/responseService.js"></script>
   <script src="../js/public/survey.js"></script>

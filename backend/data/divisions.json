@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "name": "Licensing and Regulation Division",
+    "description": "Permits, radio operator licenses, radio station licensing, and renewals."
+  },
+  {
+    "id": 2,
+    "name": "Enforcement and Radio Monitoring Division",
+    "description": "Inspections, radio frequency monitoring, illegal transmitter investigations, and regulatory enforcement."
+  },
+  {
+    "id": 3,
+    "name": "Legal Division",
+    "description": "Legal compliance, hearings, complaints, and administrative cases."
+  },
+  {
+    "id": 4,
+    "name": "Administrative and Finance Division",
+    "description": "Human resources, procurement, budgeting, records, and general office operations."
+  },
+  {
+    "id": 5,
+    "name": "Technical Services / Engineering Section",
+    "description": "Engineering evaluation, spectrum management support, and technical assessments."
+  }
+]

@@ -25,6 +25,7 @@
         <a href="analytics.html"><span class="icon">&#9673;</span> Analytics</a>
         <a href="reports.html"><span class="icon">&#9636;</span> Reports</a>
         <a href="questions.html"><span class="icon">&#9776;</span> Questions</a>
+        <a href="survey-access.html"><span class="icon">&#128273;</span> Survey Access</a>
         <a href="settings.html"><span class="icon">&#9881;</span> Settings</a>
       </nav>
       <div class="sidebar-footer">
@@ -35,7 +36,10 @@
     <div class="admin-main">
       <header class="admin-topbar">
         <h1>Feedback</h1>
-        <div class="admin-topbar__user" id="admin-user-label">Administrator</div>
+        <div class="admin-topbar__meta">
+          <span id="live-update-status" class="live-update-status" aria-live="polite"><span class="live-update-status__dot"></span><span>Updating every 10 seconds</span></span>
+          <div class="admin-topbar__user" id="admin-user-label">Administrator</div>
+        </div>
       </header>
 
       <main class="admin-content">
@@ -48,6 +52,16 @@
 
         <div id="feedback-error" class="form-error" hidden></div>
 
+        <div class="feedback-filters">
+          <div class="field">
+            <label for="feedback-division">Division</label>
+            <select id="feedback-division">
+              <option value="">All divisions</option>
+            </select>
+          </div>
+          <p id="feedback-filter-summary" class="feedback-filter-summary" aria-live="polite">All responses</p>
+        </div>
+
         <div class="card">
           <div id="feedback-loading" class="state-message">Loading responses&hellip;</div>
           <table class="table" id="feedback-table" hidden>
@@ -55,9 +69,10 @@
               <tr>
                 <th>ID</th>
                 <th>Submitted</th>
+                <th>Division</th>
                 <th>Overall Rating</th>
                 <th>Comment</th>
-                <th></th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody id="feedback-tbody"></tbody>
@@ -72,13 +87,32 @@
             </div>
           </div>
         </div>
+        <dialog id="feedback-detail-dialog" class="feedback-detail-dialog" aria-labelledby="feedback-detail-title">
+          <div class="feedback-detail-header">
+            <div>
+              <p class="survey-access-eyebrow">SUBMITTED RESPONSE</p>
+              <h2 id="feedback-detail-title">Response details</h2>
+            </div>
+            <button id="close-feedback-detail" class="btn btn-secondary" type="button">Close</button>
+          </div>
+          <dl class="feedback-detail-meta">
+            <div><dt>Submitted</dt><dd id="detail-submitted"></dd></div>
+            <div><dt>Division</dt><dd id="detail-division"></dd></div>
+            <div><dt>Overall rating</dt><dd id="detail-rating"></dd></div>
+          </dl>
+          <h3>Answers</h3>
+          <div id="feedback-detail-answers" class="feedback-detail-answers"></div>
+        </dialog>
       </main>
     </div>
   </div>
 
   <script src="../js/services/api.js"></script>
   <script src="../js/services/authService.js"></script>
+  <script src="../js/services/divisionService.js"></script>
   <script src="../js/services/responseService.js"></script>
+  <script src="../js/services/questionService.js"></script>
+  <script src="../js/services/liveRefresh.js"></script>
   <script src="../js/admin/adminShell.js"></script>
   <script src="../js/admin/feedback.js"></script>
 </body>

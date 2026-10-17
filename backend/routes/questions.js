@@ -2,10 +2,20 @@ const express = require("express");
 const router = express.Router();
 const { readAll, insert, update, remove } = require("../utils/jsonStore");
 const requireAuth = require("../middleware/requireAuth");
+const requireSurveyAccess = require("../middleware/requireSurveyAccess");
 
 // GET /api/questions — public, used to render the survey
-router.get("/", (req, res) => {
-  const questions = readAll("questions").sort((a, b) => {
+router.get("/", requireSurveyAccess, (req, res) => {
+  const requestedDivisionId = req.query.divisionId ? Number(req.query.divisionId) : null;
+  if (requestedDivisionId !== null && !readAll("divisions").some((division) => division.id === requestedDivisionId)) {
+    return res.status(400).json({ error: "Choose a valid survey division." });
+  }
+
+  const questions = readAll("questions")
+    .filter((question) =>
+      requestedDivisionId === null || question.divisionId == null || question.divisionId === requestedDivisionId
+    )
+    .sort((a, b) => {
     if (a.categoryId !== b.categoryId) return a.categoryId - b.categoryId;
     return a.order - b.order;
   });
@@ -15,10 +25,14 @@ router.get("/", (req, res) => {
 // POST /api/questions — admin only
 router.post("/", requireAuth, (req, res) => {
   const { categoryId, type, text, order } = req.body;
+  const divisionId = req.body.divisionId ? Number(req.body.divisionId) : null;
   if (!categoryId || !type || !text) {
     return res.status(400).json({ error: "categoryId, type, and text are required." });
   }
-  const created = insert("questions", { categoryId, type, text, order: order || 1 });
+  if (divisionId !== null && !readAll("divisions").some((division) => division.id === divisionId)) {
+    return res.status(400).json({ error: "Choose a valid survey division." });
+  }
+  const created = insert("questions", { categoryId, type, text, order: order || 1, divisionId });
   res.status(201).json(created);
 });
 

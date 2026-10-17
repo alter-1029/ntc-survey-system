@@ -134,3 +134,8 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Runtime secrets/data
+backend/data/adminCredentials.json
+backend/data/adminPasswordResets.json
+backend/data/surveyAccessCodes.json

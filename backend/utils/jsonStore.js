@@ -26,6 +26,7 @@ function readAll(collection) {
 
 function writeAll(collection, records) {
   const file = filePath(collection);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(records, null, 2), "utf-8");
 }
 

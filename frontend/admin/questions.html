@@ -25,6 +25,7 @@
         <a href="analytics.html"><span class="icon">&#9673;</span> Analytics</a>
         <a href="reports.html"><span class="icon">&#9636;</span> Reports</a>
         <a href="questions.html" class="active"><span class="icon">&#9776;</span> Questions</a>
+        <a href="survey-access.html"><span class="icon">&#128273;</span> Survey Access</a>
         <a href="settings.html"><span class="icon">&#9881;</span> Settings</a>
       </nav>
       <div class="sidebar-footer">
@@ -42,7 +43,7 @@
         <div class="page-heading">
           <div>
             <h2>Survey Questions</h2>
-            <p>Questions shown to guests, grouped by category.</p>
+            <p>Manage shared questions or add questions for a specific Region 2 division.</p>
           </div>
         </div>
 
@@ -61,6 +62,13 @@
               <div class="field">
                 <label for="q-category">Category</label>
                 <select id="q-category" required></select>
+              </div>
+              <div class="field">
+                <label for="q-division">Applies to</label>
+                <select id="q-division" required>
+                  <option value="">Shared across all divisions</option>
+                </select>
+                <p class="field-hint">Shared questions appear in every division; division-specific questions appear only for that division.</p>
               </div>
               <div class="field">
                 <label for="q-type">Answer type</label>

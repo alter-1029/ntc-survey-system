@@ -1,17 +1,21 @@
 const QuestionService = {
-  async getCategories() {
-    return NtcApi.apiRequest("/api/categories");
+  async getCategories(options = {}) {
+    return NtcApi.apiRequest("/api/categories", options);
   },
 
-  async getQuestions() {
-    return NtcApi.apiRequest("/api/questions");
+  async getQuestions(options = {}) {
+    const { divisionId, ...requestOptions } = options;
+    const url = divisionId === undefined
+      ? "/api/questions"
+      : `/api/questions?divisionId=${encodeURIComponent(divisionId)}`;
+    return NtcApi.apiRequest(url, requestOptions);
   },
 
   /** Groups the flat question list by category, sorted, ready for rendering. */
-  async getSurveyStructure() {
+  async getSurveyStructure(options = {}) {
     const [categories, questions] = await Promise.all([
-      this.getCategories(),
-      this.getQuestions(),
+      this.getCategories(options),
+      this.getQuestions(options),
     ]);
 
     return categories
@@ -21,15 +25,16 @@ const QuestionService = {
         questions: questions
           .filter((q) => q.categoryId === category.id)
           .sort((a, b) => a.order - b.order),
-      }));
+      }))
+      .filter((category) => category.questions.length > 0);
   },
 
   /** Admin only: add a new survey question. */
-  async addQuestion({ categoryId, type, text, order }) {
+  async addQuestion({ categoryId, type, text, order, divisionId }) {
     return NtcApi.apiRequest("/api/questions", {
       method: "POST",
       auth: true,
-      body: { categoryId, type, text, order },
+      body: { categoryId, type, text, order, divisionId },
     });
   },
 

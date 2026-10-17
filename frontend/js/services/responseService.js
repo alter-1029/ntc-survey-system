@@ -1,15 +1,18 @@
 const ResponseService = {
-  /** Public: guest submits their completed survey. */
-  async submit(answers) {
+  /** Signed-in survey user submits a completed response. */
+  async submit(answers, divisionId) {
     return NtcApi.apiRequest("/api/responses", {
       method: "POST",
-      body: { answers },
+      surveyAuth: true,
+      body: { answers, divisionId },
     });
   },
 
   /** Admin: paginated list of submissions, newest first. */
-  async list({ page = 1, pageSize = 10 } = {}) {
-    return NtcApi.apiRequest(`/api/responses?page=${page}&pageSize=${pageSize}`, {
+  async list({ page = 1, pageSize = 10, divisionId } = {}) {
+    const params = new URLSearchParams({ page, pageSize });
+    if (divisionId) params.set("divisionId", divisionId);
+    return NtcApi.apiRequest(`/api/responses?${params}`, {
       auth: true,
     });
   },

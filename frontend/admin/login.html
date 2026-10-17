@@ -12,30 +12,48 @@
 <body>
   <div class="login-shell">
     <div class="login-card">
-      <div class="brand">
-        <img src="https://formsphilippines.com/agencylogo/28.png" alt="NTC logo" class="brand__logo" />
-        <div>
-
+      <section class="login-content" aria-labelledby="login-title">
+        <div class="brand login-brand">
+          <img src="https://formsphilippines.com/agencylogo/28.png" alt="NTC logo" class="brand__logo" />
+          <div>
+            <div class="brand__name">National Telecommunications Commission</div>
+            <div class="brand__tagline">Guest Satisfaction Portal</div>
+          </div>
         </div>
-      </div>
-      <h2>Sign in</h2>
-      <p class="sub">GUEST SATISFACTION ADMIN</p>
 
-      <div id="login-error" class="form-error" hidden></div>
+        <div class="login-form-wrap">
+          <p class="login-eyebrow">ADMINISTRATOR ACCESS</p>
+          <h1 id="login-title">Welcome Back</h1>
+          <p class="login-description">Sign in to manage guest satisfaction feedback.</p>
 
-      <form id="login-form">
-        <div class="field">
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" autocomplete="username" required />
+          <div id="login-notice" class="settings-form-message" role="status" hidden></div>
+          <div id="login-error" class="form-error" role="alert" hidden></div>
+
+          <form id="login-form">
+            <div class="field">
+              <label for="username">Username</label>
+              <input type="text" id="username" name="username" autocomplete="username" placeholder="Enter your username" required />
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Enter your password" required />
+            </div>
+            <button type="submit" id="btn-login" class="btn btn-primary btn-block">Sign In</button>
+          </form>
+          <p class="login-recovery"><a href="forgot-password.html">Forgot password?</a></p>
+          <p class="login-footer">Authorized NTC administrators only</p>
         </div>
-        <div class="field">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" autocomplete="current-password" required />
-        </div>
-        <button type="submit" id="btn-login" class="btn btn-primary btn-block">Sign In</button>
-      </form>
+      </section>
 
-      <p class="login-hint">Demo credentials &mdash; username: <strong>admin</strong>, password: <strong>ntc-admin</strong></p>
+      <aside class="login-visual" aria-label="NTC communications and connectivity">
+        <img src="https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=1400&q=85" alt="Earth viewed from space" />
+        <div class="login-visual__shade"></div>
+        <div class="login-visual__caption">
+          <span class="login-visual__rule"></span>
+          <p>Connecting communities.<br />Listening to every voice.</p>
+          <span>National Telecommunications Commission</span>
+        </div>
+      </aside>
     </div>
   </div>
 

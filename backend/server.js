@@ -14,9 +14,11 @@ const responseRoutes = require("./routes/responses");
 const questionRoutes = require("./routes/questions");
 const categoryRoutes = require("./routes/categories");
 const analyticsRoutes = require("./routes/analytics");
+const divisionRoutes = require("./routes/divisions");
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4179;
+app.set("trust proxy", 1);
 
 app.use(cors());
 app.use(express.json());
@@ -31,6 +33,7 @@ app.use("/api/responses", responseRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/divisions", divisionRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });

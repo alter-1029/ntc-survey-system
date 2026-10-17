@@ -25,6 +25,7 @@
         <a href="analytics.html"><span class="icon">&#9673;</span> Analytics</a>
         <a href="reports.html"><span class="icon">&#9636;</span> Reports</a>
         <a href="questions.html"><span class="icon">&#9776;</span> Questions</a>
+        <a href="survey-access.html"><span class="icon">&#128273;</span> Survey Access</a>
         <a href="settings.html"><span class="icon">&#9881;</span> Settings</a>
       </nav>
       <div class="sidebar-footer">
@@ -35,7 +36,10 @@
     <div class="admin-main">
       <header class="admin-topbar">
         <h1>Dashboard</h1>
-        <div class="admin-topbar__user" id="admin-user-label">Administrator</div>
+        <div class="admin-topbar__meta">
+          <span id="live-update-status" class="live-update-status" aria-live="polite"><span class="live-update-status__dot"></span><span>Updating every 10 seconds</span></span>
+          <div class="admin-topbar__user" id="admin-user-label">Administrator</div>
+        </div>
       </header>
 
       <main class="admin-content">
@@ -51,6 +55,14 @@
         <div id="dashboard-loading" class="state-message">Loading dashboard data&hellip;</div>
 
         <div id="dashboard-content" hidden>
+          <div class="dashboard-context">
+            <label class="dashboard-division-filter" for="dashboard-division">Division
+              <select id="dashboard-division" class="chart-filter">
+                <option value="">All divisions</option>
+              </select>
+            </label>
+            <span>Monthly comparisons use the previous calendar month.</span>
+          </div>
           <section class="stat-grid">
             <div class="stat-card">
               <div class="stat-card__label">Total Responses</div>
@@ -58,29 +70,53 @@
               <div class="stat-card__delta" id="stat-total-delta"></div>
             </div>
             <div class="stat-card">
-              <div class="stat-card__label">Average Rating</div>
+              <div class="stat-card__label">Overall Average</div>
               <div class="stat-card__value" id="stat-avg">&mdash;</div>
               <div class="stat-card__delta" id="stat-avg-delta"></div>
             </div>
             <div class="stat-card">
-              <div class="stat-card__label">Satisfied</div>
+              <div class="stat-card__label">All-time Satisfaction</div>
               <div class="stat-card__value" id="stat-satisfied">&mdash;</div>
-              <div class="stat-card__delta neutral">Based on overall rating</div>
+              <div class="stat-card__delta" id="stat-satisfied-delta"></div>
             </div>
             <div class="stat-card">
               <div class="stat-card__label">This Month</div>
               <div class="stat-card__value" id="stat-month">&mdash;</div>
-              <div class="stat-card__delta neutral">Guest responses</div>
+              <div class="stat-card__delta" id="stat-month-delta"></div>
             </div>
           </section>
 
           <section class="dashboard-grid">
             <div class="card chart-card">
-              <h3>Satisfaction trend</h3>
+              <div class="chart-card__header">
+                <div>
+                  <h3>Response trend</h3>
+                  <p class="dashboard-chart-note">Submission count by time bucket</p>
+                </div>
+                <label class="visually-hidden" for="trend-period">Trend chart time period</label>
+                <select id="trend-period" class="chart-filter">
+                  <option value="7d">7 days</option>
+                  <option value="30d">30 days</option>
+                  <option value="12m">12 months</option>
+                  <option value="all" selected>All time</option>
+                </select>
+              </div>
               <div class="bar-chart" id="bar-chart"></div>
             </div>
             <div class="card chart-card">
-              <h3>Overall satisfaction</h3>
+              <div class="chart-card__header">
+                <div>
+                  <h3>Overall satisfaction</h3>
+                  <p class="dashboard-chart-note">Share and count of rated responses</p>
+                </div>
+                <label class="visually-hidden" for="satisfaction-period">Satisfaction chart time period</label>
+                <select id="satisfaction-period" class="chart-filter">
+                  <option value="7d">7 days</option>
+                  <option value="30d">30 days</option>
+                  <option value="12m">12 months</option>
+                  <option value="all" selected>All time</option>
+                </select>
+              </div>
               <div class="donut-wrap">
                 <svg id="donut-chart" width="180" height="180" viewBox="0 0 42 42"></svg>
                 <div class="donut-legend" id="donut-legend"></div>
@@ -93,8 +129,10 @@
   </div>
 
   <script src="../js/services/api.js"></script>
+  <script src="../js/services/liveRefresh.js"></script>
   <script src="../js/services/authService.js"></script>
   <script src="../js/services/analyticsService.js"></script>
+  <script src="../js/services/divisionService.js"></script>
   <script src="../js/admin/adminShell.js"></script>
   <script src="../js/admin/dashboard.js"></script>
 </body>

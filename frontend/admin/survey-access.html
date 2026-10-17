@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survey Access &mdash; NTC Admin</title>
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="https://formsphilippines.com/agencylogo/28.png" alt="NTC logo" class="brand__logo" />
+        <div>
+          <div class="brand__name">NTC Admin</div>
+          <div class="brand__tagline">Guest Satisfaction</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html"><span class="icon">&#9635;</span> Dashboard</a>
+        <a href="feedback.html"><span class="icon">&#9776;</span> Feedback</a>
+        <a href="analytics.html"><span class="icon">&#9673;</span> Analytics</a>
+        <a href="reports.html"><span class="icon">&#9636;</span> Reports</a>
+        <a href="questions.html"><span class="icon">&#9776;</span> Questions</a>
+        <a href="survey-access.html" class="active"><span class="icon">&#128273;</span> Survey Access</a>
+        <a href="settings.html"><span class="icon">&#9881;</span> Settings</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="#" id="logout-link"><span class="icon">&#8594;</span> Logout</a>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <h1>Survey Access</h1>
+        <div class="admin-topbar__user" id="admin-user-label">Administrator</div>
+      </header>
+
+      <main class="admin-content">
+        <div class="page-heading">
+          <div>
+            <p class="survey-access-eyebrow">REGION 2 / IDENTITY AND ENTRY</p>
+            <h2>Survey access</h2>
+            <p>Manage survey accounts and their one-time sign-in codes.</p>
+          </div>
+        </div>
+
+        <section class="survey-access-overview" aria-label="Survey access overview">
+          <div class="survey-access-metric">
+            <span>Survey accounts</span>
+            <strong id="survey-account-total">&mdash;</strong>
+          </div>
+          <div class="survey-access-metric">
+            <span>Active QR codes</span>
+            <strong id="survey-active-qr-total">&mdash;</strong>
+          </div>
+          <div class="survey-access-metric">
+            <span>Need a new QR</span>
+            <strong id="survey-qr-attention">&mdash;</strong>
+          </div>
+        </section>
+
+        <div id="survey-user-error" class="form-error" role="alert" hidden></div>
+      <div id="survey-user-status" class="settings-form-message" role="status" aria-live="polite" hidden></div>
+
+        <div class="survey-access-grid">
+          <form id="survey-user-form" class="card">
+            <p class="survey-access-card-eyebrow">NEW ACCOUNT</p>
+            <h3>Create survey account</h3>
+            <p class="survey-access-card-note">Credentials and a one-time QR code are created together.</p>
+            <div class="field">
+              <label for="survey-name">Name</label>
+              <input id="survey-name" name="name" type="text" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="survey-username">Username</label>
+              <input id="survey-username" name="username" type="text" autocomplete="off" minlength="3" required />
+            </div>
+            <div class="field">
+              <label for="survey-password">Password</label>
+              <input id="survey-password" name="password" type="password" autocomplete="new-password" minlength="10" required />
+            </div>
+            <button class="btn btn-primary" type="submit">Create account and QR code</button>
+          </form>
+
+          <div class="card survey-user-list-card">
+            <div class="survey-user-list-heading">
+              <div>
+                <p class="survey-access-card-eyebrow">ACCOUNT DIRECTORY</p>
+                <h3>Survey accounts</h3>
+              </div>
+              <button id="refresh-survey-users" class="btn btn-secondary" type="button" aria-label="Refresh survey accounts">Refresh</button>
+            </div>
+            <div class="survey-selection-toolbar">
+              <label class="survey-select-all">
+                <input id="select-all-survey-users" type="checkbox" />
+                <span>Select all</span>
+              </label>
+              <span id="survey-selection-summary" class="survey-selection-summary">0 selected</span>
+              <div class="survey-selection-actions">
+                <button id="delete-selected-qrs" class="btn btn-danger" type="button" disabled>Delete selected QR codes</button>
+                <button id="delete-selected-accounts" class="btn btn-danger" type="button" disabled>Delete selected accounts</button>
+              </div>
+            </div>
+            <div id="survey-users-list" class="survey-users-list" aria-live="polite"></div>
+            <div id="survey-qr-result" class="survey-qr-result" hidden></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/services/api.js"></script>
+  <script src="../js/services/authService.js"></script>
+  <script src="../js/admin/adminShell.js"></script>
+  <script src="../js/admin/surveyAccess.js"></script>
+</body>
+</html>

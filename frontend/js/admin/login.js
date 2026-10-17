@@ -7,7 +7,19 @@
 
   const form = document.getElementById("login-form");
   const errorEl = document.getElementById("login-error");
+  const noticeEl = document.getElementById("login-notice");
   const btn = document.getElementById("btn-login");
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.has("passwordChanged")) {
+    noticeEl.textContent = "Password updated. Sign in with your new password.";
+    noticeEl.dataset.state = "success";
+    noticeEl.hidden = false;
+  } else if (params.has("passwordReset")) {
+    noticeEl.textContent = "Password reset complete. Sign in with your new password.";
+    noticeEl.dataset.state = "success";
+    noticeEl.hidden = false;
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

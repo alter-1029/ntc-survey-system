@@ -25,13 +25,17 @@
     </nav>
   </header>
 
-  <main class="thank-you card">
-    <div class="thank-you__icon">&#10003;</div>
-    <h2>Thank you for your feedback!</h2>
-    <p style="color: var(--text-muted); margin: 0.75rem 0 1.5rem;">
-      Your response has been recorded and will help us improve NTC's public services.
+  <main class="thank-you card" aria-labelledby="thank-you-title">
+    <div class="thank-you__icon" aria-hidden="true">&#10003;</div>
+    <p class="thank-you__eyebrow">RESPONSE RECEIVED</p>
+    <h1 id="thank-you-title">Thank you for sharing your experience.</h1>
+    <p class="thank-you__message">
+      Your feedback has been recorded. It helps NTC identify what is working well and where public services can improve.
     </p>
-    <a href="index.html" class="btn btn-primary">Back to Home</a>
+    <p id="thank-you-division" class="thank-you__division" hidden></p>
+    <div class="thank-you__actions">
+      <a href="index.html" class="btn btn-primary">Return to NTC portal</a>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -40,6 +44,13 @@
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+    const divisionName = sessionStorage.getItem("ntc_survey_submitted_division");
+    if (divisionName) {
+      const divisionLabel = document.getElementById("thank-you-division");
+      divisionLabel.textContent = `Feedback submitted for ${divisionName}`;
+      divisionLabel.hidden = false;
+      sessionStorage.removeItem("ntc_survey_submitted_division");
+    }
   </script>
 </body>
 </html>

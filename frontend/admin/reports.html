@@ -25,6 +25,7 @@
         <a href="analytics.html"><span class="icon">&#9673;</span> Analytics</a>
         <a href="reports.html" class="active"><span class="icon">&#9636;</span> Reports</a>
         <a href="questions.html"><span class="icon">&#9776;</span> Questions</a>
+        <a href="survey-access.html"><span class="icon">&#128273;</span> Survey Access</a>
         <a href="settings.html"><span class="icon">&#9881;</span> Settings</a>
       </nav>
       <div class="sidebar-footer">
@@ -35,7 +36,10 @@
     <div class="admin-main">
       <header class="admin-topbar">
         <h1>Reports</h1>
-        <div class="admin-topbar__user" id="admin-user-label">Administrator</div>
+        <div class="admin-topbar__meta">
+          <span id="live-update-status" class="live-update-status" aria-live="polite"><span class="live-update-status__dot"></span><span>Updating every 10 seconds</span></span>
+          <div class="admin-topbar__user" id="admin-user-label">Administrator</div>
+        </div>
       </header>
 
       <main class="admin-content">
@@ -48,12 +52,25 @@
 
         <div id="reports-error" class="form-error" hidden></div>
 
+        <section class="card reports-live-summary" aria-label="Current response count">
+          <div>
+            <p class="reports-live-summary__label">SAVED RESPONSES</p>
+            <strong id="reports-response-count">&mdash;</strong>
+          </div>
+          <span>Records matching the selected division</span>
+        </section>
+
         <div class="card">
-          <h3 style="margin-bottom: 0.5rem;">Export all responses (CSV)</h3>
+          <h3 style="margin-bottom: 0.5rem;">Export responses (CSV)</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
-            Downloads every submitted response &mdash; ID, submission date, overall rating,
-            and individual answers &mdash; as a CSV file you can open in Excel or Google Sheets.
+            Download response records and their answers as a CSV file.
           </p>
+          <div class="field reports-division-field">
+            <label for="reports-division">Division</label>
+            <select id="reports-division" class="form-control">
+              <option value="">All divisions</option>
+            </select>
+          </div>
           <button type="button" id="btn-export" class="btn btn-primary">Download CSV</button>
         </div>
       </main>
@@ -63,7 +80,9 @@
   <script src="../js/services/api.js"></script>
   <script src="../js/services/authService.js"></script>
   <script src="../js/services/responseService.js"></script>
+  <script src="../js/services/liveRefresh.js"></script>
   <script src="../js/services/questionService.js"></script>
+  <script src="../js/services/divisionService.js"></script>
   <script src="../js/admin/adminShell.js"></script>
   <script src="../js/admin/reports.js"></script>
 </body>

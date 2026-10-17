@@ -8,6 +8,10 @@ const crypto = require("crypto");
 const SECRET = process.env.TOKEN_SECRET || "ntc-guest-satisfaction-dev-secret";
 const TOKEN_TTL_MS = 1000 * 60 * 60 * 8; // 8 hours
 
+if (process.env.NODE_ENV === "production" && !process.env.TOKEN_SECRET) {
+  throw new Error("TOKEN_SECRET must be configured in production.");
+}
+
 function sign(payloadObj) {
   const payload = { ...payloadObj, exp: Date.now() + TOKEN_TTL_MS };
   const payloadB64 = Buffer.from(JSON.stringify(payload)).toString("base64url");
@@ -20,18 +24,24 @@ function sign(payloadObj) {
 
 function verify(token) {
   if (!token || typeof token !== "string" || !token.includes(".")) return null;
-  const [payloadB64, signature] = token.split(".");
+  const [payloadB64, signature, extra] = token.split(".");
+  if (!payloadB64 || !signature || extra) return null;
   const expectedSignature = crypto
     .createHmac("sha256", SECRET)
     .update(payloadB64)
     .digest("base64url");
 
-  if (signature !== expectedSignature) return null;
+  const actual = Buffer.from(signature);
+  const expected = Buffer.from(expectedSignature);
+  if (actual.length !== expected.length || !crypto.timingSafeEqual(actual, expected)) return null;
 
-  const payload = JSON.parse(Buffer.from(payloadB64, "base64url").toString("utf-8"));
-  if (payload.exp < Date.now()) return null;
-
-  return payload;
+  try {
+    const payload = JSON.parse(Buffer.from(payloadB64, "base64url").toString("utf-8"));
+    if (!payload || typeof payload.exp !== "number" || payload.exp < Date.now()) return null;
+    return payload;
+  } catch {
+    return null;
+  }
 }
 
 module.exports = { sign, verify };
